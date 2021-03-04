@@ -1,0 +1,6 @@
+packages/
+obj/
+bin/
+package-lock.json
+DiamondQuranWeb/App_Data/aspnet-DiamondQuranWeb-20191115101512_log.ldf
+DiamondQuranWeb/App_Data/aspnet-DiamondQuranWeb-20191115101512.mdf

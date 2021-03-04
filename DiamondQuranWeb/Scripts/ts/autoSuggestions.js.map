@@ -1,0 +1,1 @@
+{"version":3,"file":"autoSuggestions.js","sourceRoot":"","sources":["autoSuggestions.ts"],"names":[],"mappings":"AAAA,SAAS,MAAM;IACX,IAAI,MAAM,GAAG,QAAQ,CAAC,cAAc,CAAC,QAAQ,CAAC,CAAC;IAC/C,IAAI,WAAW,GAAG,QAAQ,CAAC,aAAa,CAAC,OAAO,CAAC,CAAC;IAClD,MAAM,CAAC,MAAM,CAAC,WAAW,CAAC,CAAC;AAE/B,CAAC;AAAA,CAAC"}

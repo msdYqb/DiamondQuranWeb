@@ -1,0 +1,248 @@
+﻿@model DiamondQuranWeb.Models.SearchResultViewModel
+@using DiamondQuranWeb.SearchEngine.Enums
+@using DiamondQuranWeb.Helpers
+
+@{
+    ViewBag.Title = Model.SearchPost.Keyword;
+}
+<div id="searchDiv">
+    <div class="searchInput">
+        <div style="position: relative">
+            @Html.TextBoxFor(x => x.SearchPost.Keyword, new { id = "form-autocomplete", @class = "input form-control madb-utocomplete", type = "search", })
+            <div class="leftIcon">
+                <i onclick="searchClicked()" class="fas fa-search"></i>
+            </div>
+            <div class="rightIcon">
+                <i onclick="displayKeyboard()" class="fas fa-keyboard"></i>
+            </div>
+        </div>
+    </div>
+</div>
+<div style="position: relative">
+    <div style="position:absolute; top:0; width:100%; margin:0 auto;z-index:1">
+        <div class="simple-keyboard"></div>
+    </div>
+    <div class="row" style="margin:0 auto; max-width:700px;margin-top:1em">
+        <div class="col-6" style="padding:0">
+            @Html.EnumDropDownListFor(x => x.SearchPost.SearchOption, null, new { id = "searchOption", @class = "form-control", style = "padding:0;width:auto" })
+        </div>
+        <div class="col-6" style="padding:0">
+            <h3 style="text-align:right;">طريقة البحث</h3>
+        </div>
+    </div>
+</div>
+<div class="row" style="margin:0 auto; max-width:700px">
+    <div class="col-6" style="padding:0">
+        <div class="custom-control custom-switch">
+            <input type="checkbox" class="custom-control-input" id="wordsSearch">
+            <label class="custom-control-label" for="wordsSearch"></label>
+        </div>
+    </div>
+    <div class="col-6" style="padding:0">
+        <h3 style="text-align:right">البحث بالكلمات</h3>
+    </div>
+</div>
+
+<div class="row" style="margin:0 auto; max-width:700px">
+    <div class="col-6" style="padding:0">
+        <select id="quranTextSearchType" onchange="textSearchTypeChanged()" class="form-control" style="padding:0;width:auto">
+            @{
+                foreach (var textType in Enum.GetValues(typeof(QuranTextType)).Cast<QuranTextType>())
+                {
+                    var selected = "";
+                    if (textType == Model.SearchPost.QuranTextSearchType)
+                    {
+                        selected = "selected";
+                    }
+                    <option @(selected) value="@(textType)">@textType.GetDisplayName()</option>
+                }
+            }
+        </select>
+    </div>
+    <div class="col-6" style="padding:0">
+        <h3 style="text-align:right;">البحث بخط</h3>
+    </div>
+</div>
+
+<div class="row" style="margin:0 auto; max-width:700px">
+    <div class="col-6" style="padding:0">
+        <select id="quranTextResultType" class="form-control" style="padding:0;width:auto">
+            @{
+                foreach (var textType in Enum.GetValues(typeof(QuranTextType)).Cast<QuranTextType>())
+                {
+                    var textTypeclass = "Normal";
+                    if (textType.ToString().Contains("Uthmani"))
+                    {
+                        textTypeclass = "Uthmani";
+                    }
+                    var selected = "";
+                    if (textType == Model.SearchPost.QuranTextResultType)
+                    {
+                        selected = "selected";
+                    }
+                    <option @(selected) value="@(textType)" class="@(textTypeclass)">@textType.GetDisplayName()</option>
+                }
+            }
+        </select>
+    </div>
+    <div class="col-6" style="padding:0">
+        <h3 style="text-align:right;">اظهار النتيجة</h3>
+    </div>
+</div>
+
+<hr />
+<div class="row align-items-center">
+    <p class="col-12 mb-0 counterResultParagraph" style="width:100%; text-align:center">
+        <span>
+            Match
+            @Model.ISearch.CountMatch
+        </span>
+        <span>
+            Ayah
+            @Model.SearchResultList.Count
+        </span>
+        <span>
+            Surah
+            @Model.ISearch.SurahCount
+        </span>
+    </p>
+</div>
+<hr />
+@foreach (var item in Model.SearchResultList)
+{
+    var ayahId = item.ID.ToString();
+    var commentvisibility = item.HasComment ? "visible" : "hidden";
+    var favoritevisibility = item.InFavorite ? "visible" : "hidden";
+    <div class="row">
+        <div class="col-1">
+            <div style="height:100%; display:flex;flex-direction:column;justify-content:space-between;">
+                <i id="favorite-@(ayahId)" class="far fa-star" style="display:flex; justify-content:center; margin-bottom:0.5em;visibility:@(favoritevisibility)"></i>
+                <i id="comment-@(ayahId)" class="fas fa-comments" style="display:flex; justify-content:center;margin-bottom:0.5em;visibility:@(commentvisibility)"></i>
+                <p style="width:100%;text-align:center; line-height:1; font-size:1rem; margin:0;padding:0">
+                    <span>@item.SurahName</span>
+                    <br>
+                    <span>@item.AyahNumber</span>
+                </p>
+            </div>
+        </div>
+        <div class="col-11">
+            @item.AyahLabel
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-6">
+            <div style="display:flex; justify-content:center">
+                <button type="button" class="btn btn-light buttonsShadow" data-toggle="collapse" href="#options-@(ayahId)" role="button" aria-expanded="false" aria-controls="options-@(ayahId)" onclick="this.blur();">الخيارات</button>
+            </div>
+            <div class="collapse" id="options-@(ayahId)">
+                <div class="" style="display:flex; justify-content:center; width:100%">
+                    @* UpdateTargetId = ayahId *@
+                    @using (Ajax.BeginForm("GetTafsir", "Home", new { ayahId }, new AjaxOptions() { HttpMethod = "get", OnSuccess = "getTafsir" }, null))
+                    {
+                        <button type="submit" data-toggle="modal" data-target="#tafsirModal" class="tafsir btn btn-light buttonsShadow" style="margin:0.5em;">تفسير</button>
+                    }
+                    @using (Ajax.BeginForm("GetFavorites", "Home", new { ayahId }, new AjaxOptions() { HttpMethod = "get", OnSuccess = "getFavorites" }, null))
+                    {
+                        @*@Html.AntiForgeryToken()*@
+                        <button type="submit" data-toggle="modal" data-target="#favoritesModal" class="btn btn-light buttonsShadow" style="margin:0.5em;">مفضلة</button>
+                    }
+                    @using (Ajax.BeginForm("GetComment", "Home", new { ayahId }, new AjaxOptions() { HttpMethod = "get", OnSuccess = "getComment" }, null))
+                    {
+                        <button type="submit" data-toggle="modal" data-target="#commentModal" class="btn btn-light buttonsShadow" style="margin:0.5em;">تعليق</button>
+                    }
+                    <button name="@ayahId" type="button" class="copyBtn btn btn-light buttonsShadow" data-toggle="tooltip" data-placement="bottom" title="تم نسخ الآية" style="margin:0.5em;" onclick="copyToClipboard(this.name);">نسخ</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div style="display:flex; justify-content:center">
+                @Html.ActionLink("الذهاب للاية", "Quran", "Home", new { SurahNumber = item.SurahNumber, AyahNumber = item.AyahNumber }, new { @class = "btn btn-light buttonsShadow" })
+            </div>
+        </div>
+    </div>
+    <hr />
+}
+<div class="modal fade" tabindex="-1" role="dialog" id="tafsirModal" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                @Html.EnumDropDownListFor(x => x.Tafsirs, null, new { id = "tafsir", @class = "form-control modal-title", style = "padding:0;width:auto", onchange = "changeTafsir(this.name,this.value)" })
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="position:relative;min-height:4rem;">
+                <div id="spinner" class="spinner-border spinnerPopup" style="z-index:1; display:normal; margin: auto;position: absolute;top: 0; left: 0; bottom: 0; right: 0; width: 3rem; height: 3rem;" role="status" disabled>
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <div id="tafsirPopup">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" tabindex="-1" role="dialog" id="commentModal" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">تعليق</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="-body" style="position:relative;min-height:4rem;">
+                <div id="spinner" class="spinner-border spinnerPopup" style="z-index:1; margin: auto;position: absolute;top: 0; left: 0; bottom: 0; right: 0; width: 3rem; height: 3rem;" role="status" disabled>
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <textarea id="commentText" style="width:100%;height:100%"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" id="saveCommentBtn" class="btn btn-primary" onclick="saveComment(this.name);">Save changes</button>
+                <button type="submit" id="deleteCommentBtn" class="btn btn-primary" onclick="deleteComment(this.name);">Delete</button>
+                <button type="submit" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" tabindex="-1" role="dialog" id="favoritesModal" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">المفضلة</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="position:relative;min-height:4rem;">
+                <div id="spinner" class="spinner-border spinnerPopup" style=" z-index:1; margin: auto;position: absolute;top: 0; left: 0; bottom: 0; right: 0; width: 3rem; height: 3rem;" role="status" disabled>
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <table width="100%" class="display" id="example"></table>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <style>
+        .ui-autocomplete {
+            max-width: 500px;
+        }
+
+        .ui-menu {
+            position: fixed;
+            width: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+    </style>
+    <script type="text/javascript" src="~/Scripts/search.js"></script>
+    <script type="text/javascript" src="~/Scripts/searchSetting.js"></script>
+    <script type="text/javascript" src="~/Scripts/versesListView.js"></script>
+}

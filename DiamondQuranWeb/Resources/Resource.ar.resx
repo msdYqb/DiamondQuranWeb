@@ -1,0 +1,368 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<!-- 
+		Microsoft ResX Schema
+
+		Version 1.3
+
+		The primary goals of this format is to allow a simple XML format 
+		that is mostly human readable. The generation and parsing of the 
+		various data types are done through the TypeConverter classes 
+		associated with the data types.
+
+		Example:
+
+		... ado.net/XML headers & schema ...
+		<resheader name="resmimetype">text/microsoft-resx</resheader>
+		<resheader name="version">1.3</resheader>
+		<resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+		<resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+		<data name="Name1">this is my long string</data>
+		<data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+		<data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+			[base64 mime encoded serialized .NET Framework object]
+		</data>
+		<data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+			[base64 mime encoded string representing a byte array form of the .NET Framework object]
+		</data>
+
+		There are any number of "resheader" rows that contain simple 
+		name/value pairs.
+
+		Each data row contains a name, and value. The row also contains a 
+		type or mimetype. Type corresponds to a .NET class that support 
+		text/value conversion through the TypeConverter architecture. 
+		Classes that don't support this are serialized and stored with the 
+		mimetype set.
+
+		The mimetype is used for serialized objects, and tells the 
+		ResXResourceReader how to depersist the object. This is currently not 
+		extensible. For a given mimetype the value must be set accordingly:
+
+		Note - application/x-microsoft.net.object.binary.base64 is the format 
+		that the ResXResourceWriter will generate, however the reader can 
+		read any of the formats listed below.
+
+		mimetype: application/x-microsoft.net.object.binary.base64
+		value   : The object must be serialized with 
+			: System.Serialization.Formatters.Binary.BinaryFormatter
+			: and then encoded with base64 encoding.
+
+		mimetype: application/x-microsoft.net.object.soap.base64
+		value   : The object must be serialized with 
+			: System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+			: and then encoded with base64 encoding.
+
+		mimetype: application/x-microsoft.net.object.bytearray.base64
+		value   : The object must be serialized into a byte array 
+			: using a System.ComponentModel.TypeConverter
+			: and then encoded with base64 encoding.
+	-->
+	
+	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+		<xsd:element name="root" msdata:IsDataSet="true">
+			<xsd:complexType>
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="data">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="resheader">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" />
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:choice>
+			</xsd:complexType>
+		</xsd:element>
+	</xsd:schema>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>1.3</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+  <data name="Add" xml:space="preserve">
+    <value>اضافة</value>
+  </data>
+  <data name="AllVersesAdded" xml:space="preserve">
+    <value>تم اضافة جميع الايات</value>
+  </data>
+  <data name="AllWillBeAdded" xml:space="preserve">
+    <value>سوف يتم اضافة جميع الايات في نتائج البحث</value>
+  </data>
+  <data name="AlreadyInstalled" xml:space="preserve">
+    <value>ملف التفسير مثبت</value>
+  </data>
+  <data name="AreYouSure" xml:space="preserve">
+    <value>هل انت متاكد؟</value>
+  </data>
+  <data name="AskToDownload" xml:space="preserve">
+    <value>ملف التفسير غير موجود ... هل تود تحميله من السيرفر؟</value>
+  </data>
+  <data name="AyaAdded" xml:space="preserve">
+    <value>تم اضافة الاية</value>
+  </data>
+  <data name="AyahSrc" xml:space="preserve">
+    <value>مصدر الآية</value>
+  </data>
+  <data name="AyaMany" xml:space="preserve">
+    <value>عدد الايات</value>
+  </data>
+  <data name="AyatTafsirs" xml:space="preserve">
+    <value>تفاسير الايات</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>الغاء</value>
+  </data>
+  <data name="CommentAdded" xml:space="preserve">
+    <value>تم اضافة التعليق على الاية</value>
+  </data>
+  <data name="CommentDel" xml:space="preserve">
+    <value>تم حذف التعليق</value>
+  </data>
+  <data name="Contains" xml:space="preserve">
+    <value>يحتوي على</value>
+  </data>
+  <data name="CopyClipboard" xml:space="preserve">
+    <value>آية تم نسخها في الذاكرة</value>
+  </data>
+  <data name="DelClipboard" xml:space="preserve">
+    <value>آية تم مسحها من الذاكرة</value>
+  </data>
+  <data name="DoesntExist" xml:space="preserve">
+    <value>غير موجود</value>
+  </data>
+  <data name="EnterAlistName" xml:space="preserve">
+    <value>يرجى كتابة اسم القائمه</value>
+  </data>
+  <data name="EnterMoreLetters" xml:space="preserve">
+    <value>يرجى ادخال حرفين فما فوق</value>
+  </data>
+  <data name="Fav" xml:space="preserve">
+    <value>المفضلة</value>
+  </data>
+  <data name="HowMany" xml:space="preserve">
+    <value>عدد المرات</value>
+  </data>
+  <data name="Installed" xml:space="preserve">
+    <value>مثبت</value>
+  </data>
+  <data name="LangChanged" xml:space="preserve">
+    <value>تم تغيير اللغة</value>
+  </data>
+  <data name="ListAdded" xml:space="preserve">
+    <value>تم اضافة القائمة</value>
+  </data>
+  <data name="Matches" xml:space="preserve">
+    <value>مطابق</value>
+  </data>
+  <data name="MultipleCopiesClipboard" xml:space="preserve">
+    <value>النسخ المتعدد للايات في ذاكرة النسخ</value>
+  </data>
+  <data name="MultipleDelClipboard" xml:space="preserve">
+    <value>مسح جميع الايات في ذاكرة النسخ</value>
+  </data>
+  <data name="NameExist" xml:space="preserve">
+    <value>اسم القائمه موجود مسبقا يرجى اختيار اسم آخر</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>لا</value>
+  </data>
+  <data name="NotExcept" xml:space="preserve">
+    <value>على مستوى الجذر</value>
+  </data>
+  <data name="NotExistOnServer" xml:space="preserve">
+    <value>عفوا ملف التفسير غير موجود في السيرفر حاليا</value>
+  </data>
+  <data name="NotInstalled" xml:space="preserve">
+    <value>غير مثبت</value>
+  </data>
+  <data name="ReadQuran" xml:space="preserve">
+    <value>قرائة القران</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>حفظ</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>البحث</value>
+  </data>
+  <data name="SearchOption" xml:space="preserve">
+    <value>خيارات البحث</value>
+  </data>
+  <data name="SearchResults" xml:space="preserve">
+    <value>نتائج البحث</value>
+  </data>
+  <data name="SelectSearchOption" xml:space="preserve">
+    <value>يرجى اختيار طريقة البحث</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>الاعدادات</value>
+  </data>
+  <data name="DoneDel" xml:space="preserve">
+    <value>تم الحذف</value>
+  </data>
+  <data name="TwoSrchBoxesMissing" xml:space="preserve">
+    <value>يرجى ادخال حرفين فما فوق واختيار طريقة البحث</value>
+  </data>
+  <data name="VerseSelect" xml:space="preserve">
+    <value>اختيار السورة</value>
+  </data>
+  <data name="WriteAcomment" xml:space="preserve">
+    <value>كتابة تعليق</value>
+  </data>
+  <data name="WriteUs" xml:space="preserve">
+    <value>نسعد بتلقى استفساراتكم واقتراحاتكم</value>
+  </data>
+  <data name="Wrong" xml:space="preserve">
+    <value>خطأ</value>
+  </data>
+  <data name="Wsearch" xml:space="preserve">
+    <value>البحث بالكلمات</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>نعم</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>مسح</value>
+  </data>
+  <data name="DiamondQuran" xml:space="preserve">
+    <value>القرآن الماسي</value>
+  </data>
+  <data name="AyahNumber" xml:space="preserve">
+    <value>رقم الاية</value>
+  </data>
+  <data name="CharactersNumbers" xml:space="preserve">
+    <value>عدد الاحرف</value>
+  </data>
+  <data name="ContainsLettersArranged" xml:space="preserve">
+    <value>يحتوي الاحرف (مرتب)</value>
+  </data>
+  <data name="ContainsLettersUnArranged" xml:space="preserve">
+    <value>يحتوي الاحرف (غير مرتب)</value>
+  </data>
+  <data name="ContainsNoncontiguous" xml:space="preserve">
+    <value>يحتوي على (غير متلاصق)</value>
+  </data>
+  <data name="FirstInAyahContains" xml:space="preserve">
+    <value>بداية الاية (يحتوي على)</value>
+  </data>
+  <data name="FirstInWord" xml:space="preserve">
+    <value>بداية الكلمة</value>
+  </data>
+  <data name="Fonts" xml:space="preserve">
+    <value>الخطوط</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>اللغة</value>
+  </data>
+  <data name="LastInAyahContains" xml:space="preserve">
+    <value>نهاية الاية (يحتوي على)</value>
+  </data>
+  <data name="LastInWord" xml:space="preserve">
+    <value>نهاية الكلمة</value>
+  </data>
+  <data name="LongestAyah" xml:space="preserve">
+    <value>اطول الايات</value>
+  </data>
+  <data name="LongestSurah" xml:space="preserve">
+    <value>اطول السور</value>
+  </data>
+  <data name="LongestWords" xml:space="preserve">
+    <value>اطول الكلمات</value>
+  </data>
+  <data name="MostWords" xml:space="preserve">
+    <value>اكثر الكلمات</value>
+  </data>
+  <data name="NumberOfRepetition" xml:space="preserve">
+    <value>عدد التكرار</value>
+  </data>
+  <data name="QuranicStatistics" xml:space="preserve">
+    <value>احصائيات قرآنية</value>
+  </data>
+  <data name="Surah" xml:space="preserve">
+    <value>سوره</value>
+  </data>
+  <data name="Tafsirs" xml:space="preserve">
+    <value>التفاسير</value>
+  </data>
+  <data name="Word" xml:space="preserve">
+    <value>الكلمة</value>
+  </data>
+  <data name="ArabicFontSize" xml:space="preserve">
+    <value>حجم الخط العربي</value>
+  </data>
+  <data name="ArabicFontStyle" xml:space="preserve">
+    <value>نوع الخط العربي</value>
+  </data>
+  <data name="ContactUs" xml:space="preserve">
+    <value>اتصل بنا</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>تعديل</value>
+  </data>
+  <data name="Done" xml:space="preserve">
+    <value>تم</value>
+  </data>
+  <data name="DownloadCompleted" xml:space="preserve">
+    <value>تم التحميل بنجاح</value>
+  </data>
+  <data name="Ayah" xml:space="preserve">
+    <value>آية</value>
+  </data>
+  <data name="MatchesNoncontiguous" xml:space="preserve">
+    <value>مطابق (غير متلاصق)</value>
+  </data>
+  <data name="SearchMatches" xml:space="preserve">
+    <value>مره</value>
+  </data>
+  <data name="FirstInSurahContains" xml:space="preserve">
+    <value>بداية السورة (يحتوي على)</value>
+  </data>
+  <data name="LastInSurahContains" xml:space="preserve">
+    <value>نهاية السورة (يحتوي على)</value>
+  </data>
+  <data name="LogicSearchAnd" xml:space="preserve">
+    <value>البحث المنطقي و</value>
+  </data>
+  <data name="LogicSearchNot" xml:space="preserve">
+    <value>البحث المنطقي ولا</value>
+  </data>
+  <data name="LogicSearchOr" xml:space="preserve">
+    <value>البحث المنطقي او</value>
+  </data>
+  <data name="LogicsSearch" xml:space="preserve">
+    <value>البحث المنطقي</value>
+  </data>
+  <data name="AndNot" xml:space="preserve">
+    <value>ولا</value>
+  </data>
+  <data name="MultipleSearch" xml:space="preserve">
+    <value>البحث المتعدد</value>
+  </data>
+  <data name="SeperatedSearch" xml:space="preserve">
+    <value>بحث متفرق</value>
+  </data>
+  <data name="WithinSearch" xml:space="preserve">
+    <value>بحث ضمني</value>
+  </data>
+  <data name="ReverseSearch" xml:space="preserve">
+    <value>البحث المعاكس</value>
+  </data>
+</root>

@@ -1,0 +1,75 @@
+﻿@model DiamondQuranWeb.Models.QuranViewModel
+@using DiamondQuranWeb.Models
+@using DiamondQuranWeb.Helpers;
+@{
+    var data = new ApplicationDbContext();
+}
+
+@{
+    ViewBag.Title = "Quran";
+}
+
+@using (Html.BeginForm("Quran", "Home"))
+{
+    @Html.HiddenFor(x => x.Page)
+    <div class="row">
+        <div class="col-2">
+            @{ string disabled = ""; }
+            @if (Model.Page == 604)
+            { disabled = "disabled"; }
+            <button class="searchButtons" name="command" type="submit" value="Next" style="font-size:3rem;float:left" @disabled>></button>
+        </div>
+        <div class="col-8" style="display:flex;justify-content:center">
+            @Html.DropDownListFor(x => x.AyahNumber, Model.AyahList, new { id = "ayahList" })
+            @Html.DropDownListFor(x => x.SurahNumber, Model.SurahList, new { id = "surahList" })
+        </div>
+        <div class="col-2">
+            @{ disabled = "";}
+            @if (Model.Page == 1)
+            { disabled = "disabled"; }
+            <button class="searchButtons" name="command" type="submit" value="Previous" style="font-size:3rem;float:right" @disabled><</button>
+        </div>
+    </div>
+}
+
+@{var surah = ""; short i = 0;}
+@foreach (var ayah in data.Quran.Where(x => x.Page == Model.Page))
+{
+    if (i == 0)
+    {
+        if (ayah.AyahNumber == 1)
+        {
+            <div class="col-12"> <hr /> <h2 style="text-align:center">@ayah.SurahName</h2>  <hr /> </div>
+        }
+        surah = ayah.SurahName;
+    }
+    if (ayah.SurahName != surah)
+    {
+        <div class="col-12"> <hr /> <h2 style="text-align:center">@ayah.SurahName</h2> <hr /> </div>
+        surah = ayah.SurahName;
+    }
+
+    if (ayah.AyahNumber == Model.AyahNumber)
+    {
+        <div class="row">
+            <div class="col-12">
+                <p class="resultParagraph" style="color:red;text-align:center">
+                    @ayah.NormalCleanest (@ayah.AyahNumber)
+                </p>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-12">
+                <p class="resultParagraph" style="text-align:center">
+                    @ayah.NormalCleanest (@ayah.AyahNumber)
+                </p>
+            </div>
+        </div>
+    }
+    i++;
+}
+@section scripts{
+}
