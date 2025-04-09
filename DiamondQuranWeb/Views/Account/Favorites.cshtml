@@ -1,0 +1,83 @@
+﻿@model DiamondQuranWeb.Models.FavoritesViewModel
+@using DiamondQuranWeb.Data
+@using DiamondQuranWeb.Models
+@using DiamondQuranWeb.SearchEngine.Enums
+@using DiamondQuranWeb.Helpers
+@{
+    var dbContext = new ApplicationDbContext(Constants.DbContextOptions);
+}
+
+@{
+    ViewBag.Title = @Model.ListName + " - " + Constants.AppName;
+}
+
+<hr />
+<div class="row align-items-center">
+    <p class="col-12 mb-0 counterResultParagraph" style="width:100%; text-align:center">
+        @Model.ListName
+    </p>
+</div>
+<hr />
+@foreach (var favorite in Model.Favorites)
+{
+    var item = dbContext.Quran.Single(x => x.ID == favorite.Quran.ID);
+
+    var ayahId = item.ID.ToString();
+    var commentvisibility = item.HasComment ? "visible" : "hidden";
+    <div id="block-@(favorite.ID)">
+        <div class="row">
+            <div class="col-1">
+                <div style="height:100%; display:flex;flex-direction:column;justify-content:space-between;">
+                    <i class="far fa-star" style="display:flex; justify-content:center; margin-bottom:0.5em;visibility:hidden"></i>
+                    <i id="comment-@(ayahId)" class="fas fa-comments" style="display:flex; justify-content:center;margin-bottom:0.5em;visibility:@(commentvisibility)"></i>
+                    <p style="width:100%;text-align:center; line-height:1; font-size:1rem; margin:0;padding:0">
+                        <span>@item.SurahName</span>
+                        <br>
+                        <span>@item.AyahNumber</span>
+                    </p>
+                </div>
+            </div>
+            <div class="col-11">
+                <p id="@(ayahId)">@item.NormalEnhanced</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-6">
+                <div style="display:flex; justify-content:center">
+                    <button type="button" class="btn btn-light buttonsShadow" data-toggle="collapse" href="#options-@(ayahId)" role="button" aria-expanded="false" aria-controls="options-@(ayahId)" onclick="this.blur();">الخيارات</button>
+                </div>
+                <div class="collapse" id="options-@(ayahId)">
+                    <div class="" style="display:flex; justify-content:center; width:100%">
+                        <button type="button" onclick="getTafsir(@ayahId)" data-toggle="modal" data-target="#tafsirModal" class="tafsir btn btn-light buttonsShadow" style="margin:0.5em;">تفسير</button>
+                        <button id="removeFavBtn-@(favorite.ID)" type="button" onclick="removeFavorite(@favorite.ID,@favorite.FavoriteList.ID)" class="btn btn-light buttonsShadow" style="margin:0.5em;display:inline-flex; align-items: center">
+                            ازالة من المفضلة
+                            <span id="removeFavSpinner-@(favorite.ID)" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display:none"></span>
+                            </button>
+                        <button type="button" onclick="getComment(@ayahId)" class="btn btn-light buttonsShadow" style="margin:0.5em;">تعليق</button>
+                        <button name="@ayahId" type="button" class="copyBtn btn btn-light buttonsShadow" data-toggle="tooltip" data-placement="bottom" title="تم نسخ الآية" style="margin:0.5em;" onclick="copyToClipboard(this.name);">نسخ</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div style="display:flex; justify-content:center">
+                    @Html.ActionLink("الذهاب للاية", "Quran", "Home", new { SurahNumber = item.SurahNumber, AyahNumber = item.AyahNumber }, new { @class = "btn btn-light buttonsShadow" })
+                </div>
+            </div>
+        </div>
+        <hr />
+    </div>
+}
+<partial name="_AyahOptions" />
+<style>
+    .btn-disable {
+        cursor: not-allowed;
+        pointer-events: none;
+        /*Button disabled - CSS color class*/
+        color: #c0c0c0;
+        background-color: #ffffff;
+    }
+</style>
+@section Scripts{
+<script type="text/javascript" src="~/js/versesListView.js"></script>
+}

@@ -1,0 +1,10 @@
+﻿@using DiamondQuranWeb.Helpers
+
+@section scripts{
+<script src="_framework/blazor.server.js"></script>
+<script>
+    Blazor.defaultReconnectionHandler._reconnectCallback = function(d) {
+         document.location.reload();
+    }
+</script>
+}

@@ -1,0 +1,66 @@
+﻿@using DiamondQuranWeb.Helpers
+@model DiamondQuranWeb.Models.WordsSearchResultViewModel
+@{
+    ViewBag.Title = "البحث بالكلمات" + " - " + Constants.AppName;
+}
+
+<div style="margin:0 auto;max-width:700px">
+    <div class="row align-items-center">
+        <p class="col-12 mb-0 counterResultParagraph" style="width:100%; text-align:center">
+            <span>
+                نتيجة البحث
+                @Model.ISearch.CountMatch
+            </span>
+            <span>
+                في
+                @Model.WordsSearchResultList.Count
+                آية
+            </span>
+            <span>
+                و
+                @Model.ISearch.SurahCount
+                سورة
+            </span>
+        </p>
+    </div>
+    <hr />
+    <div>
+        <div class="row">
+            <div class="col-6">
+                <div class="custom-control custom-switch">
+                    <input id="selectAllWords" class="custom-control-input" type="checkbox">
+                    <label class="custom-control-label" for="selectAllWords"></label>
+                </div>
+            </div>
+            <div class="col-6">
+                <p style="font-size:2em;direction:rtl; text-align:right">
+                    اختيار الجميع
+                </p>
+            </div>
+        </div>
+        <hr />
+        @foreach (var word in Model.WordsSearchResultList)
+        {
+            <div class="row">
+                <div class="col-6">
+                    <div class="custom-control custom-switch">
+                        <input id="@word.Word" class="word-switch custom-control-input" type="checkbox">
+                        <label class="custom-control-label" style="" for="@word.Word">@word.Word</label>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <p style="font-size:2em; direction:rtl; text-align:right">
+                        @foreach (var wordGrammer in word.WordsWithGrammersList)
+                        {
+                            <span>@wordGrammer.Word.Trim()</span>
+                        }
+                    </p>
+                </div>
+            </div>
+        }
+    </div>
+    <button class="searchButtons middleSearchButtons btn btn-light" type="submit" onclick="searchByWords();" value="SearchBySelectedWords">ابحث</button>
+</div>
+@section scripts{
+<script type="text/javascript" src="~/js/wordsSearchResult.js"></script>
+}

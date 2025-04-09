@@ -1,0 +1,169 @@
+﻿@model DiamondQuranWeb.Models.LogicsSearchViewModel
+@using DiamondQuranWeb.SearchEngine.Enums
+@using DiamondQuranWeb.Helpers
+
+@{
+    ViewBag.Title = "البحث المنطقي" + " - " + Constants.AppName;
+}
+
+@section description{
+    <meta name="description" content="البحث المنطقي لمحرك بخث القرآن الماسي">
+}
+
+<div class="row" style="margin:0 auto; max-width:700px">
+    <div class="col-6" style="padding:0">
+        <div class="custom-control custom-switch">
+            <input type="checkbox" class="custom-control-input" id="wordsSearch">
+            <label class="custom-control-label" for="wordsSearch"></label>
+        </div>
+    </div>
+    <div class="col-6" style="padding:0">
+        <h3 style="text-align:right">البحث بالكلمات</h3>
+    </div>
+</div>
+
+<div class="row" style="margin:0 auto; max-width:700px">
+    <div class="col-6" style="padding:0">
+        <select id="quranTextSearchType" onchange="textSearchTypeChanged()" class="form-control" style="padding:0;width:auto">
+            @{
+                foreach (var textType in Enum.GetValues(typeof(QuranTextType)).Cast<QuranTextType>())
+                {
+                    <option value="@(textType)">@textType.GetDisplayName()</option>
+                }
+            }
+        </select>
+    </div>
+    <div class="col-6" style="padding:0">
+        <h3 style="text-align:right;">البحث بخط</h3>
+    </div>
+</div>
+
+<div class="row" style="margin:0 auto; max-width:700px">
+    <div class="col-6" style="padding:0">
+        <select id="quranTextResultType" class="form-control" style="padding:0;width:auto">
+            @{
+                foreach (var textType in Enum.GetValues(typeof(QuranTextType)).Cast<QuranTextType>())
+                {
+                    var textTypeclass = "Normal";
+                    if (textType.ToString().Contains("Uthmani"))
+                    {
+                        textTypeclass = "Uthmani";
+                    }
+                    <option value="@(textType)" class="@(textTypeclass)">@textType.GetDisplayName()</option>
+                }
+            }
+        </select>
+    </div>
+    <div class="col-6" style="padding:0">
+        <h3 style="text-align:right;">اظهار النتيجة بخط</h3>
+    </div>
+</div>
+
+<hr />
+<ul class="nav nav-tabs" role="tablist" style="">
+    <li class="nav-item">
+        <a class="nav-link active" id="and-tab" data-toggle="tab" href="#and" role="tab" aria-controls="and" aria-selected="true">و</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="or-tab" data-toggle="tab" href="#or" role="tab" aria-controls="or" aria-selected="false">او</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="not-tab" data-toggle="tab" href="#not" role="tab" aria-controls="not" aria-selected="false">لا</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="andNot-tab" data-toggle="tab" href="#andNot" role="tab" aria-controls="andNot" aria-selected="false">ولا</a>
+    </li>
+</ul>
+<div class="tab-content">
+    <div class="tab-pane fade show active" id="and" role="tabpanel" aria-labelledby="and-tab">
+        <p class="logicsHeader">البحث المنطقي و</p>
+        <div class="row">
+            <div class="col-6">
+                <input class="increaseDecreaseBtns btn btn-light" type="button" value="+" onclick="add('and')" />
+            </div>
+            <div class="col-6">
+                <input class="increaseDecreaseBtns btn btn-light" type="button" value="-" onclick="remove('and')" style="float:left" />
+            </div>
+        </div>
+        <div class="row custom-switch" style="margin-top:1em;">
+            <div class="col-12" style="display:flex;justify-content:center">
+                <input type="checkbox" class="custom-control-input" id="andWithinSearch">
+                <label class="custom-control-label" for="andWithinSearch">بحث ضمني</label>
+            </div>
+        </div>
+        <div id="andDiv" style="display:block">
+        </div>
+        <input class="searchButtons middleSearchButtons btn btn-light" type="button" value="ابحث" onclick="search('and')" />
+        <hr />
+    </div>
+    <div class="tab-pane fade" id="or" role="tabpanel" aria-labelledby="or-tab">
+        <p class="logicsHeader">البحث المنطقي او</p>
+        <div class="row">
+            <div class="col-6">
+                <input class="increaseDecreaseBtns btn btn-light" type="button" value="+" onclick="add('or')" />
+            </div>
+            <div class="col-6">
+                <input class="increaseDecreaseBtns btn btn-light" type="button" value="-" onclick="remove('or')" style="float:left" />
+            </div>
+        </div>
+        <div id="orDiv" style="display:block">
+        </div>
+        <input class="searchButtons middleSearchButtons btn btn-light" type="button" value="ابحث" onclick="search('or')" />
+        <hr />
+    </div>
+    <div class="tab-pane fade" id="not" role="tabpanel" aria-labelledby="not-tab">
+        <p class="logicsHeader">البحث المنطقي لا</p>
+        <div class="row">
+            <div class="col-6">
+                <input class="increaseDecreaseBtns btn btn-light" type="button" value="+" onclick="add('not')" />
+            </div>
+            <div class="col-6">
+                <input class="increaseDecreaseBtns btn btn-light" type="button" value="-" onclick="remove('not')" style="float:left" />
+            </div>
+        </div>
+        <div id="notDiv" style="display:block">
+        </div>
+        <input class="searchButtons middleSearchButtons btn btn-light" type="button" value="ابحث" onclick="search('not')" />
+        <hr />
+    </div>
+    <div class="tab-pane fade" id="andNot" role="tabpanel" aria-labelledby="andNot-tab">
+        <p class="logicsHeader">البحث المنطقي ولا</p>
+        <div id="andNotDiv" style="display:block">
+            <div class="row">
+                <div class="col-6">
+                    <input class="increaseDecreaseBtns btn btn-light" type="button" value="+" onclick="add('andNot1')" />
+                </div>
+                <div class="col-6">
+                    <input class="increaseDecreaseBtns btn btn-light" type="button" value="-" onclick="remove('andNot1')" style="float:left" />
+                </div>
+            </div>
+            <div class="row custom-switch" style="margin-top:1em;">
+                <div class="col-12" style="display: flex;justify-content:center">
+                    <input type="checkbox" class="custom-control-input" id="andNotWithinSearch">
+                    <label class="custom-control-label" for="andNotWithinSearch">بحث ضمني</label>
+                </div>
+            </div>
+            <div id="andNot1Div" style="display:block">
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <input class="increaseDecreaseBtns btn btn-light" type="button" value="+" onclick="add('andNot2')" />
+                </div>
+                <div class="col-6">
+                    <input class="increaseDecreaseBtns btn btn-light" type="button" value="-" onclick="remove('andNot2')" style="float:left;" />
+                </div>
+            </div>
+            <div id="andNot2Div" style="display:block">
+            </div>
+            <input class="searchButtons middleSearchButtons btn btn-light" type="button" value="ابحث" onclick="search('andNot')" />
+        </div>
+        <hr />
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        let searchOptions = @Html.Raw(Model.SearchOptions);
+    </script>
+    <script type="text/javascript" src="~/js/logicsSearch.js"></script>
+}

@@ -1,0 +1,166 @@
+﻿@using DiamondQuranWeb.Models
+@using DiamondQuranWeb.Services
+@using Newtonsoft.Json
+@using DiamondQuranWeb.SearchEngine.Models
+@using System.IO
+@using Microsoft.JSInterop
+@inject IJSRuntime JS
+
+<div class="row">
+    <div class="col-2">
+        <button class="searchButtons" @onclick="NextClicked" name="command" type="button" value="Next" style="font-size:3rem;float:left" disabled="@nextDisabled">التالي</button>
+    </div>
+    <div class="col-8" style="display:flex;justify-content:center">
+        <select value="@currentSurah" @onchange="OnSurahChange">
+            @foreach (var surah in QuranIndex)
+            {
+                <option value="@surah.SurahNumber">@surah.SurahName</option>
+            }
+        </select>
+
+        <select value="@currentAyah" @onchange="OnAyahChange">
+            @for (int i = 0; i < versesCount;)
+            {
+                <option>@(++i)</option>
+            }
+        </select>
+    </div>
+    <div class="col-2">
+        <button class="searchButtons" @onclick="PreviousClicked" name="command" type="button" value="Previous" style="font-size:3rem;float:right" disabled="@previousDisabled">السابق</button>
+    </div>
+</div>
+
+@foreach (var ayah in quran)
+{
+    if (i == 0)
+    {
+        if (ayah.AyahNumber == 1)
+        {
+            <div class="col-12"> <hr /> <h2 style="text-align:center; direction:rtl">﴿@ayah.SurahName﴾</h2>  <hr /> </div>
+        }
+        surah = ayah.SurahName;
+    }
+    if (ayah.SurahName != surah)
+    {
+        <div class="col-12"> <hr /> <h2 style="text-align:center; direction:rtl">﴿@ayah.SurahName﴾</h2> <hr /> </div>
+        surah = ayah.SurahName;
+    }
+    if (ayah.SurahNumber == currentSurah && ayah.AyahNumber == currentAyah && NavBySearch == true)
+    {
+        <div class="row">
+            <div class="col-12">
+                <p id=@ayah.ID class="resultParagraph" style="color:red;text-align:center" onclick="openMenu(this.id)">
+                    @ayah.NormalEnhanced (@ayah.AyahNumber)
+                </p>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-12">
+                <p id=@ayah.ID class="resultParagraph" style="text-align:center" onclick="openMenu(this.id)">
+                    @ayah.NormalEnhanced (@ayah.AyahNumber)
+                </p>
+            </div>
+        </div>
+    }
+    i++;
+}
+
+@code {
+    string surah = ""; short i = 0;
+    [Parameter]
+    public List<QuranIndex> QuranIndex { get; set; }
+    [Parameter]
+    public string CurrentDomain { get; set; }
+    [Parameter]
+    public bool NavBySearch { get; set; }
+
+    private List<Quran> quran = new List<Quran>();
+    private int versesCount = 7;
+
+    [Parameter]
+    public int currentSurah { get; set; }
+    [Parameter]
+    public int currentAyah { get; set; }
+
+    private short currentPage;
+    private bool nextDisabled;
+    private bool previousDisabled;
+    private bool navByPage;
+    public void OnSurahChange(ChangeEventArgs e)
+    {
+        var selected = Convert.ToInt32(e.Value);
+        versesCount = QuranIndex.Single(x => x.SurahNumber == selected).VersesAmount;
+        currentSurah = selected;
+        currentAyah = 1;
+        GetQuran();
+    }
+    public void OnAyahChange(ChangeEventArgs e)
+    {
+        var selected = Convert.ToInt32(e.Value);
+        currentAyah = selected;
+        GetQuran();
+    }
+    async Task GetQuran()
+    {
+        var quranCalls = new QuranCalls();
+        quranCalls.CurrentDomain = CurrentDomain;
+        var responseStr = await quranCalls.GetQuran(currentSurah, currentAyah, currentPage, navByPage);
+        quran = JsonConvert.DeserializeObject<List<Quran>>(responseStr);
+        currentPage = quran[0].Page;
+        NavButtons();
+        if (navByPage)
+        {
+            currentSurah = quran[0].SurahNumber;
+            currentAyah = quran[0].AyahNumber;
+        }
+        if (NavBySearch)
+            versesCount = QuranIndex.Single(x => x.SurahNumber == quran[0].SurahNumber).VersesAmount;
+        navByPage = false;
+        surah = "";
+        i = 0;
+        StateHasChanged();
+        if (NavBySearch)
+            JS.InvokeVoidAsync("CleanUrl");
+        NavBySearch = false;
+    }
+
+    protected async override void OnInitialized()
+    {
+        if (!NavBySearch)
+        {
+            currentSurah = 1;
+            currentAyah = 1;
+        }
+        await GetQuran();
+    }
+    void NavButtons()
+    {
+        versesCount = QuranIndex.Single(x => x.SurahNumber == quran[0].SurahNumber).VersesAmount;
+        if (currentPage <= 1)
+            previousDisabled = true;
+        else previousDisabled = false;
+        if (currentPage >= 604)
+            nextDisabled = true;
+        else
+            nextDisabled = false;
+    }
+    void NextClicked()
+    {
+        NavButtons();
+        if (currentPage < 604)
+            currentPage++;
+        navByPage = true;
+        GetQuran();
+    }
+    void PreviousClicked()
+    {
+        NavButtons();
+        if (currentPage > 1)
+            currentPage--;
+        navByPage = true;
+        GetQuran();
+    }
+}

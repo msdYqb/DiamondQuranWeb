@@ -1,0 +1,119 @@
+﻿@model DiamondQuranWeb.Models.SearchPostViewModel
+@using DiamondQuranWeb.SearchEngine.Enums
+@using DiamondQuranWeb.Helpers
+
+@{
+    ViewBag.Title = "محرك بحث القران الماسي";
+}
+
+@section description{
+<meta name="description" content="محرك بحث القران الماسي محرك بحث متطور باكثر من 17 خاصية للبحث بمفردات وجمل القران الكريم وبالخط التقليدي والعثماني">
+}
+
+<div style="padding-top:10%;">
+    <div class="row" style="position:relative">
+        <div class="col-lg-12">
+            <img src="~/Images/diamondquran.png" style="width:25%;display: block;margin: 0 auto; position:sticky;" />
+        </div>
+        <div style="position:absolute; bottom:0; width:100%; margin:0 auto">
+            <div class="simple-keyboard"></div>
+        </div>
+    </div>
+    <div class="row" style="margin-top:1em">
+        <div style="width:100%">
+            <div class="searchInput">
+                <div style="position: relative">
+                    @Html.TextBoxFor(x => x.Keyword, new { id = "form-autocomplete", @class = "input form-control madb-utocomplete", type = "search", })
+                    <div class="leftIcon">
+                        <i onclick="searchClicked()" class="fas fa-search"></i>
+                    </div>
+                    <div class="rightIcon">
+                        <i onclick="displayKeyboard()" class="fas fa-keyboard"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div style="display:flex; width:100%; justify-content:center;margin-top:1em">
+            @Html.ActionLink("البحث المنطقي", "LogicsSearch", "Home", null, new { @class = "searchButtons btn btn-light" })
+            <div style="width:1em">
+            </div>
+            <button type="button" class="searchButtons btn btn-light" onclick="searchClicked(this);">ابحث</button>
+        </div>
+    </div>
+    <hr style="margin-left:auto;margin-right:auto; max-width:700px" />
+    <div class="row">
+        <div style="width:100%; display:flex; justify-content:center">
+            <a data-toggle="collapse" href="#searchOptionWindow" aria-expanded="false" aria-controls="searchOptionWindow" onclick="rotate()">
+                <svg id="arrow" class="searchOptionsArrow" height="32" width="32" style="fill:blue">
+                    <path d="M16 20a.997.997 0 01-.707-.293L8.586 13 10 11.586l6 6 6-6L23.414 13l-6.707 6.707A.997.997 0 0116 20z"></path>
+                </svg>
+                خيارات البحث
+            </a>
+        </div>
+    </div>
+    <div class="collapse" id="searchOptionWindow">
+        <div class="row" style="margin:0 auto; max-width:700px">
+            <div class="col-6" style="padding:0">
+                @Html.DropDownList("SearchOptions",
+                Html.GetEnumSelectList(typeof(DiamondQuranWeb.SearchEngine.Enums.SearchOptions)) ,
+                null, new { id = "searchOption", @class = "form-control", style = "padding:0;width:auto" })
+            </div>
+            <div class="col-6" style="padding:0">
+                <h3 style="text-align:right;">طريقة البحث</h3>
+            </div>
+        </div>
+        <div class="row" style="margin:0 auto; max-width:700px">
+            <div class="col-6" style="padding:0">
+                <div class="custom-control custom-switch">
+                    <input id="wordsSearch" class="custom-control-input" type="checkbox">
+                    <label class="custom-control-label" for="wordsSearch"></label>
+                </div>
+            </div>
+            <div class="col-6" style="padding:0">
+                <h3 style="text-align:right;">البحث بالكلمات</h3>
+            </div>
+        </div>
+        <div class="row" style="margin:0 auto; max-width:700px">
+            <div class="col-6" style="padding:0">
+                <select id="quranTextSearchType" onchange="textSearchTypeChanged()" class="form-control" style="padding:0;width:auto">
+                    @{
+                        foreach (var textType in Enum.GetValues(typeof(QuranTextType)).Cast<QuranTextType>())
+                        {
+                            <option value="@(textType)">@textType.GetDisplayName()</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="col-6" style="padding:0">
+                <h3 style="text-align:right;">البحث بخط</h3>
+            </div>
+        </div>
+        <div class="row" style="margin:0 auto; max-width:700px">
+            <div class="col-6" style="padding:0">
+                <select id="quranTextResultType" class="form-control" style="padding:0;width:auto">
+                    @{
+                        foreach (var textType in Enum.GetValues(typeof(QuranTextType)).Cast<QuranTextType>())
+                        {
+                            var textTypeclass = "Normal";
+                            if (textType.ToString().Contains("Uthmani"))
+                            {
+                                textTypeclass = "Uthmani";
+                            }
+                            <option value="@(textType)" class="@(textTypeclass)">@textType.GetDisplayName()</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="col-6" style="padding:0">
+                <h3 style="text-align:right;">اظهار النتيجة بخط</h3>
+            </div>
+        </div>
+
+    </div>
+</div>
+@section scripts{
+<script type="text/javascript" src="~/js/main.js"></script>
+<script type="text/javascript" src="~/js/searchSetting.js"></script>
+}

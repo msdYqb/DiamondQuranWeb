@@ -1,0 +1,175 @@
+﻿@model DiamondQuranWeb.Models.SearchResultViewModel
+@using DiamondQuranWeb.SearchEngine.Enums
+@using DiamondQuranWeb.Helpers
+
+@{
+    ViewBag.Title = Model.SearchPost.Keyword + " - " + Constants.AppName;
+}
+<div id="searchDiv">
+    <div class="searchInput">
+        <div style="position: relative">
+            @Html.TextBoxFor(x => x.SearchPost.Keyword, new { id = "form-autocomplete", @class = "input form-control madb-utocomplete", type = "search", })
+            <div class="leftIcon">
+                <i onclick="searchClicked()" class="fas fa-search"></i>
+            </div>
+            <div class="rightIcon">
+                <i onclick="displayKeyboard()" class="fas fa-keyboard"></i>
+            </div>
+        </div>
+    </div>
+</div>
+<div style="position: relative">
+    <div style="position:absolute; top:0; width:100%; margin:0 auto;z-index:1">
+        <div class="simple-keyboard"></div>
+    </div>
+    <div class="row" style="margin:0 auto; max-width:700px;margin-top:1em">
+        <div class="col-6" style="padding:0">
+            @Html.DropDownList("SearchOptions", Html.GetEnumSelectList(typeof(DiamondQuranWeb.SearchEngine.Enums.SearchOptions)),  null, new { id = "searchOption", @class = "form-control", style = "padding:0;width:auto" })
+        </div>
+        <div class="col-6" style="padding:0">
+            <h3 style="text-align:right;">طريقة البحث</h3>
+        </div>
+    </div>
+</div>
+<div class="row" style="margin:0 auto; max-width:700px">
+    <div class="col-6" style="padding:0">
+        <div class="custom-control custom-switch">
+            <input type="checkbox" class="custom-control-input" id="wordsSearch">
+            <label class="custom-control-label" for="wordsSearch"></label>
+        </div>
+    </div>
+    <div class="col-6" style="padding:0">
+        <h3 style="text-align:right">البحث بالكلمات</h3>
+    </div>
+</div>
+
+<div class="row" style="margin:0 auto; max-width:700px">
+    <div class="col-6" style="padding:0">
+        <select id="quranTextSearchType" onchange="textSearchTypeChanged()" class="form-control" style="padding:0;width:auto">
+            @{
+                foreach (var textType in Enum.GetValues(typeof(QuranTextType)).Cast<QuranTextType>())
+                {
+                    var selected = "";
+                    if (textType == Model.SearchPost.QuranTextSearchType)
+                    {
+                        selected = "selected";
+                    }
+                    <!option @(selected) value="@(textType)">@textType.GetDisplayName()</!option>
+                }
+            }
+        </select>
+    </div>
+    <div class="col-6" style="padding:0">
+        <h3 style="text-align:right;">البحث بخط</h3>
+    </div>
+</div>
+
+<div class="row" style="margin:0 auto; max-width:700px">
+    <div class="col-6" style="padding:0">
+        <select id="quranTextResultType" class="form-control" style="padding:0;width:auto">
+            @{
+                foreach (var textType in Enum.GetValues(typeof(QuranTextType)).Cast<QuranTextType>())
+                {
+                    var textTypeclass = "Normal";
+                    if (textType.ToString().Contains("Uthmani"))
+                    {
+                        textTypeclass = "Uthmani";
+                    }
+                    var selected = "";
+                    if (textType == Model.SearchPost.QuranTextResultType)
+                    {
+                        selected = "selected";
+                    }
+                    <!option @(selected) value="@(textType)" class="@(textTypeclass)">@textType.GetDisplayName()</!option>
+                }
+            }
+        </select>
+    </div>
+    <div class="col-6" style="padding:0">
+        <h3 style="text-align:right;">اظهار النتيجة بخط</h3>
+    </div>
+</div>
+
+<hr />
+<div class="row align-items-center">
+    <p class="col-12 mb-0 counterResultParagraph" style="width:100%; text-align:center">
+        <span>
+            نتيجة البحث
+            @Model.ISearch.CountMatch
+        </span>
+        <span>
+            في
+            @Model.SearchResultList.Count
+            آية
+        </span>
+        <span>
+            و
+            @Model.ISearch.SurahCount
+            سورة
+        </span>
+    </p>
+</div>
+<hr />
+@foreach (var item in Model.SearchResultList)
+{
+    var ayahId = item.ID.ToString();
+    var commentvisibility = item.HasComment ? "visible" : "hidden";
+    var favoritevisibility = item.InFavorite ? "visible" : "hidden";
+    <div class="row">
+        <div class="col-1 searchResultDivs">
+            <div style="height:100%; display:flex;flex-direction:column;justify-content:space-between;">
+                <i id="favorite-@(ayahId)" class="far fa-star" style="display:flex; justify-content:center; margin-bottom:0.5em;visibility:@(favoritevisibility)"></i>
+                <i id="comment-@(ayahId)" class="fas fa-comments" style="display:flex; justify-content:center;margin-bottom:0.5em;visibility:@(commentvisibility)"></i>
+                <p id="surahName" style="width:100%;text-align:center; line-height:1; margin:0;padding:0">
+                    <span>@item.SurahName</span>
+                </p>
+                <p style="width:100%;text-align:center; line-height:1; margin:0;padding:0">
+                    <span>@item.AyahNumber</span>
+                </p>
+            </div>
+        </div>
+        <div class="col-11 searchResultDivs">
+            @Html.Raw(item.AyahLabel)
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-6">
+            <div style="display:flex; justify-content:center">
+                <button type="button" class="btn btn-light buttonsShadow" data-toggle="collapse" href="#options-@(ayahId)" role="button" aria-expanded="false" aria-controls="options-@(ayahId)" onclick="this.blur();">الخيارات</button>
+            </div>
+            <div class="collapse" id="options-@(ayahId)" style="width:100%">
+                <div class="row" style="display:flex; justify-content:center; width:100%; margin-left:0px;margin-right:0px">
+                    <button type="button" onclick="getTafsir(@ayahId)" data-toggle="modal" data-target="#tafsirModal" class="col-md-3 tafsir btn btn-light buttonsShadow" style="margin:0.5em;">تفسير</button>
+                    <button type="button" onclick="getFavorites(@ayahId)" class="col-md-3 btn btn-light buttonsShadow" style="margin:0.5em;">مفضلة</button>
+                    <button type="button" onclick="getComment(@ayahId)" class="col-md-3 btn btn-light buttonsShadow" style="margin:0.5em;">تعليق</button>
+                    <button name="@ayahId" type="button" class="col-md-3 copyBtn btn btn-light buttonsShadow" data-toggle="tooltip" data-placement="bottom" title="تم نسخ الآية" style="margin:0.5em;" onclick="copyToClipboard(this.name);">نسخ</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div style="display:flex; justify-content:center">
+                @Html.ActionLink("الذهاب للاية", "Quran", "Home", new { SurahNumber = item.SurahNumber, AyahNumber = item.AyahNumber }, new { @class = "btn btn-light buttonsShadow" })
+            </div>
+        </div>
+    </div>
+    <hr />
+}
+<partial name="_AyahOptions" />
+@section scripts{
+<style>
+    .ui-autocomplete {
+        max-width: 500px;
+    }
+
+    .ui-menu {
+        position: fixed;
+        width: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+</style>
+<script type="text/javascript" src="~/js/search.js"></script>
+<script type="text/javascript" src="~/js/searchSetting.js"></script>
+<script type="text/javascript" src="~/js/versesListView.js"></script>
+}

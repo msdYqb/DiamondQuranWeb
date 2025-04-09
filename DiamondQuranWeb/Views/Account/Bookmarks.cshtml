@@ -1,0 +1,109 @@
+﻿@using DiamondQuranWeb.Helpers
+@model DiamondQuranWeb.Models.BookmarksViewModel
+@{
+    ViewBag.Title = "المفضلة" + " - " + Constants.AppName;
+}
+
+<ul class="nav nav-tabs" id="myTab" role="tablist" style="">
+    <li class="nav-item">
+        <a class="nav-link active" id="fav-tab" data-toggle="tab" href="#fav" role="tab" aria-controls="fav" aria-selected="true">المفضلة</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="comments-tab" data-toggle="tab" href="#comments" role="tab" aria-controls="comments" aria-selected="false">التعليقات</a>
+    </li>
+</ul>
+<div class="tab-content">
+    <div class="tab-pane fade show active" id="fav" role="tabpanel" aria-labelledby="fav-tab">
+        <div style="margin:0 auto; max-width:700px">
+            <p class="logicsHeader">قوائم المفضلة</p>
+            <table style="width:100%">
+                @foreach (var favorite in Model.FavoritesList)
+                {
+                    <tr id="favRow-@(favorite.ID)">
+                        <td style="width:1%;white-space:nowrap;">
+                            <div style="display:inline-flex; align-items: center">
+                                <button class="btn btn-primary" type="button" style="display:inline-flex; align-items: center" onclick="deleteFavoriteListClicked(@(favorite.ID))">
+                                    مسح
+                                    <span id="deleteSpinner-@(favorite.ID)" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display:none"></span>
+                                </button>
+                            </div>
+                        </td>
+                        <td style="width:1%;white-space:nowrap;">
+                            <button id="editFavoriteBtn-@(favorite.ID)" class="btn btn-primary" type="button" style="display:inline-flex; align-items: center" onclick="editFavoriteList(@(favorite.ID))">
+                                تعديل
+                                <span id="editSpinner-@(favorite.ID)" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="visibility:hidden"></span>
+                            </button>
+                        </td>
+                        <td>
+                            <i id="successIcon-@(favorite.ID)" style="display:inline-flex; align-items: center"></i>
+                        </td>
+                        <td>
+                            <div>
+                                <a id="listNameAnchor-@(favorite.ID)" href="~/Account/Favorites?favoriteListId=@(favorite.ID)" style="float:right">
+                                    @(favorite.ListName)
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+                <tr>
+                    @using (Html.BeginForm())
+                    {
+                        <td colspan="2">
+                            <div style="display:flex; justify-content:center">
+                                <button class="btn btn-primary" type="submit" style="display:inline-flex; align-items: center;">
+                                    اضافة قائمة
+                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display:none"></span>
+                                </button>
+                            </div>
+                        </td>
+                        <td></td>
+                        <td>
+                            @Html.TextBoxFor(x => x.FavoriteList, null, new { @style = "float:right" })
+                        </td>
+                    }
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="tab-pane fade" id="comments" role="tabpanel" aria-labelledby="comments-tab">
+        <div style="margin:0 auto; max-width:700px">
+            <p class="logicsHeader">التعليقات</p>
+            @foreach (var comment in Model.Comments)
+            {
+                <div id="block-@(comment.ID)" class="row">
+                    <div class="col-6">
+                        <div style="display:inline-flex; align-items: center">
+                            <button class="btn btn-primary" type="submit" style="display:inline-flex; align-items: center" onclick="deleteCommentClicked('@(comment.ID)')">
+                                مسح
+                                <span id="deleteCommentSpinner-@(comment.ID)" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="visibility:hidden"></span>
+                            </button>
+                        </div>
+                        <button id="editCommentBtn-@(comment.ID)" class="btn btn-primary" type="button" style="display:inline-flex; align-items: center" onclick="editComment('@(comment.ID)')">
+                            تعديل
+                            <span id="editCommentSpinner-@(comment.ID)" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="visibility:hidden"></span>
+                        </button>
+                        <button class="btn btn-primary" name="@comment.Quran.SurahNumber+@comment.Quran.AyahNumber" type="button" style="display:inline-flex; align-items: center" onclick="goToVerse(this.name)">
+                            @comment.Quran.SurahName @comment.Quran.AyahNumber
+                        </button>
+                        <i id="commentEditSuccessIcon-@(comment.ID)" style="display:inline-flex; align-items: center"></i>
+                    </div>
+                    <div class="col-6">
+                        <p id="comment-@(comment.ID)" style="padding:0">@comment.Comment.Trim()</p>
+                    </div>
+                </div>
+
+            }
+        </div>
+    </div>
+</div>
+@section Scripts{
+<script src="~/js/bookmarks.js"></script>
+<script>
+    function goToVerse(name){
+        let surahNumber = name.split("+")[0];
+        let ayahNumber = name.split("+")[1];
+        window.open('/Quran?surahNumber=' + surahNumber + '&ayahNumber=' + ayahNumber)
+    }
+</script>
+}

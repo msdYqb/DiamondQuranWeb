@@ -1,0 +1,212 @@
+﻿@font-face {
+    font-family: amiri;
+    src: url(Amiri.ttf);
+}
+
+html, body {
+    background-color: #fafaff;
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+/*header {
+    height: 50px;
+}*/
+
+footer {
+    height: 50px;
+}
+
+footer {
+    margin-top: auto;
+}
+
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+p, input, select, h3, h2, h5, a, button {
+    font-family: amiri;
+    direction: rtl;
+    text-align: right;
+}
+
+.form-control {
+    border-radius: 30px;
+}
+
+.resultParagraph {
+    color: teal;
+    width: 100%;
+    margin-bottom: auto;
+    font-size: 2rem;
+    padding:2px;
+}
+
+.counterResultParagraph {
+    font-size: 2rem;
+}
+
+.match {
+    color: red;
+}
+
+.logicsHeader {
+    font-size: 4vw;
+    text-align: center;
+}
+
+.logicsSelect {
+    width: 70%;
+}
+
+.logicsInput {
+    width: 70%;
+}
+
+.middleSearchButtons {
+    display: block;
+    margin: 0 auto;
+}
+
+@media(max-width:767px) {
+    .logicsSelect {
+        width: 100%;
+    }
+
+    .logicsInput {
+        width: 100%;
+    }
+}
+
+.increaseDecreaseBtns {
+    width: 2.5em;
+    height: 2.5em;
+    font-size: 1rem;
+    float: right;
+    box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.75);
+    border-radius: 50%
+}
+
+.buttonsShadow {
+    box-shadow: 0px 0px 3px 0px rgba(0,0,0,0.75);
+}
+
+.searchButtons {
+    box-shadow: 0px 0px 3px 0px rgba(0,0,0,0.75);
+    border-radius: 5px;
+}
+
+.searchInput {
+    max-width: 500px;
+    height: 2.5em;
+    margin: 0 auto
+}
+
+    .searchInput .form-control {
+        position: absolute;
+        padding-left: 25px;
+        padding-right: 25px;
+        width: 100%;
+        height: 2.5em
+    }
+
+    .searchInput .leftIcon {
+        position: absolute;
+        padding-left: 5px;
+        height: 2.5em;
+        display: flex;
+        align-items: center
+    }
+
+    .searchInput .rightIcon {
+        position: absolute;
+        padding-right: 5px;
+        right: 0;
+        height: 2.5em;
+        display: flex;
+        align-items: center
+    }
+
+.simple-keyboard {
+    display: none;
+}
+
+.stickySearchInput {
+    position: fixed;
+    width: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 1em;
+    z-index: 1;
+}
+
+.validateSummary {
+    font-family: amiri;
+    display: flex;
+    justify-content: center;
+    align-items: center
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+    .headerMenu {
+        font-size: 2vw;
+    }
+    #surahName {
+        font-size: 0.6rem;
+    }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+    .headerMenu {
+    }
+    #surahName {
+        font-size: 0.6rem;
+    }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+    #surahName {
+        font-size: 1rem;
+    }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+    #surahName {
+        font-size: 1rem;
+    }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+    #surahName {
+        font-size:1rem;
+    }
+}
+
+.centered {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    /* bring your own prefixes */
+    transform: translate(-50%, -50%);
+}
+
+.my-4 header-tabs-main {
+    direction: rtl;
+    font-weight: bold;
+}
+
+.searchResultDivs {
+    padding-left: 0px;
+    padding-right: 0px;
+}

@@ -1,0 +1,107 @@
+﻿@page "/Account/Register"
+@using DiamondQuranWeb.Helpers
+@model RegisterModel
+@{
+    ViewData["Title"] = "تسجيل جديد" + " - " + Constants.AppName;
+}
+
+<div>
+    <div id="formContent">
+        <div class="" style="display: flex;justify-content: center;align-items: center;align-content: center;">
+            <img src="~/Images/diamondquran.png" style="width:50px" />
+        </div>
+        <div class="fadeIn first validateSummary" style="min-height:70px">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        </div>
+        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+            <table class="fixed">
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                        <input asp-for="Input.Email" placeholder="البريد الالكتروني" class="form-control" autocomplete="username" aria-required="true" />
+
+                    </td>
+                    <td>
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <input asp-for="Input.Password" placeholder="الرقم السري" class="form-control" autocomplete="new-password" aria-required="true" />
+                    </td>
+                    <td>
+                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <input asp-for="Input.ConfirmPassword" placeholder="تاكيد الرقم السري" class="form-control" autocomplete="new-password" aria-required="true" />
+                    </td>
+                    <td>
+                        <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                    </td>
+                </tr>
+            </table>
+            <div class="" style="min-height:70px;display: flex;justify-content: center;align-items: center;align-content: center;">
+                <button id="registerSubmit" type="submit" class="btn btn-outline-primary" style="margin:auto 0">تسجيل</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    table.fixed {
+        table-layout: fixed;
+        width: 100%;
+        padding: 0;
+    }
+
+        table.fixed td {
+            overflow: hidden;
+        }
+
+            table.fixed td:nth-of-type(1) {
+                width: 7%;
+            }
+
+            table.fixed td:nth-of-type(2) {
+                width: auto;
+                padding: 3px;
+            }
+
+            table.fixed td:nth-of-type(3) {
+                width: 7%;
+            }
+
+    table td > div {
+        width: 7%;
+    }
+
+    #formContent {
+        border-radius: 10px 10px 10px 10px;
+        background: #fff;
+        width: 100%;
+        max-width: 450px;
+        padding: 0px;
+        box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
+        text-align: center;
+    }
+
+</style>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $('#main').css('margin', 'auto').css('display', 'flex').css('justify-content', 'center');
+        $('#footer').css('margin-top', '0');
+    </script>
+}

@@ -1,0 +1,124 @@
+﻿@page "/Account/Login"
+@model LoginModel
+@using DiamondQuranWeb.Helpers
+
+@{
+    ViewData["Title"] = "تسجيل الدخول" + " - " + Constants.AppName;
+}
+
+<div>
+    <div id="formContent">
+        <section>
+            <form id="account" method="post">
+                <div class="fadeIn first validateSummary" style="min-height:70px;">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                </div>
+                <table class="fixed">
+                    <tr>
+                        <td></td>
+                        <td>
+                            <input placeholder="البريد الالكتروني" asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" style="margin-top:0;margin-left:0;margin-right:0" />
+                        </td>
+                        <td>
+                            <div>
+                                <span asp-validation-for="Input.Email" class="text-danger"></span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <input placeholder="الرقم السري" asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" style="margin-top:0;margin-left:0;margin-right:0" />
+                        </td>
+                        <td>
+                            <div>
+                                <span asp-validation-for="Input.Password" class="text-danger"></span>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+
+                <div style="min-height:70px;display: flex;justify-content: center;align-items: center;align-content: center;">
+                    <button id="login-submit" type="submit" class="btn btn-outline-primary" style="margin:auto 0">تسجيل الدخول</button>
+                </div>
+
+                <div>
+                    <div class="form-check">
+                        @Html.CheckBoxFor(m => m.Input.RememberMe, new { type = "checkbox", @class = "form-check-input", id = "rememberMe" })
+                        <label class="form-check-label" for="rememberMe" style="font-family:Amiri">تذكرني</label>
+                    </div>
+                </div>
+
+                <div id="formFooter">
+                    @Html.ActionLink("نسيت كلمة السر", "ForgotPassword", "Account", null, new { @class = "underlineHover" })
+                    @Html.ActionLink("تسجيل جديد", "Register", "Account", null, new { @class = "underlineHover" })
+                </div>
+            </form>
+        </section>
+    </div>
+</div>
+
+<style>
+    table.fixed {
+        table-layout: fixed;
+        width: 100%;
+        padding: 0;
+    }
+
+        table.fixed td {
+            overflow: hidden;
+        }
+
+            table.fixed td:nth-of-type(1) {
+                width: 7%;
+            }
+
+            table.fixed td:nth-of-type(2) {
+                width: auto;
+                padding: 3px;
+            }
+
+            table.fixed td:nth-of-type(3) {
+                width: 7%;
+            }
+
+    table td > div {
+        width: 7%;
+    }
+
+    a {
+        color: #92badd;
+        display: inline-block;
+        text-decoration: none;
+        font-weight: 400;
+    }
+
+    #formContent {
+        -webkit-border-radius: 10px 10px 10px 10px;
+        border-radius: 10px 10px 10px 10px;
+        background: #fff;
+        width: 100%;
+        max-width: 450px;
+        padding: 0px;
+        -webkit-box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
+        box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
+        text-align: center;
+    }
+
+    #formFooter {
+        background-color: #f6f6f6;
+        border-top: 1px solid #dce8f1;
+        padding: 25px;
+        text-align: center;
+        -webkit-border-radius: 0 0 10px 10px;
+        border-radius: 0 0 10px 10px;
+    }
+</style>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $('#main').css('margin', 'auto').css('display', 'flex').css('justify-content', 'center');
+        $('#footer').css('margin-top', '0');
+    </script>
+}
